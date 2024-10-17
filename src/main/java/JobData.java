@@ -5,10 +5,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by LaunchCode
@@ -75,7 +72,7 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
             }
         }
@@ -95,11 +92,39 @@ public class JobData {
         loadData();
 
         // TODO - implement this method
-        return null;
+        ArrayList<HashMap<String, String>> matchedJobs = new ArrayList<>();
+        Set<HashMap<String, String>> uniqueJobs = new HashSet<>();
+
+        //convert search to lc
+        String lowerValue = value.toLowerCase();
+
+        //iterate through jobs
+        for (HashMap<String, String> job : allJobs){
+            //iterate through kvp in the jobs hooray
+            for (Map.Entry<String, String> entry : job.entrySet()){
+                String fieldValue = entry.getValue().toLowerCase(); //upper or lower case
+
+                //search term check
+                if(fieldValue.contains(lowerValue)){
+                    uniqueJobs.add(job);
+                    break;
+                }
+            }
+        }
+        matchedJobs.addAll(uniqueJobs);
+        return matchedJobs;
+
     }
 
     /**
      * Read in data from a CSV file and store it in a list
+
+   String searchTerm = searchValue.toLowerCase();
+   String fieldValue = someFieldValue.toLowerCase();
+
+       if(fieldValue.contains(searchTerm)){
+
+        }
      */
     private static void loadData() {
 
